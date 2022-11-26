@@ -1,5 +1,3 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import { useState } from 'react'
 export default function Home() {
   const [todo, addTodo] = useState([])
@@ -18,8 +16,11 @@ export default function Home() {
           className='bg-gray-800 hover:bg-gray-900 p-2 rounded-full cursor-pointer'
           onClick={() => {
             if (input){
-              let editTodo = todo
-              editTodo.unshift(input)
+              addTodo(prev => {
+                return(
+                  [{id: todo.length, value: input}, ...prev]
+                )
+              })
               setError('') 
               setInput('')
             } else {
@@ -35,7 +36,13 @@ export default function Home() {
         <div className='flex flex-col'>
           {todo.map((task) => {
             return(
-              <p key={task + task.key}>{task}</p>
+              <div className='flex justify-between'>
+                <p key={task.id}>{task.value}</p>
+                <div className='flex gap-2'>
+                  <div className='text-green-600'>com</div>
+                  <div className='text-red-600'>del</div>
+                </div>
+              </div>
             )
           })}
         </div>
